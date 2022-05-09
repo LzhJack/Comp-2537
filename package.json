@@ -1,0 +1,19 @@
+{
+  "name": "comp-2537",
+  "version": "1.0.0",
+  "description": "Pokedex",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LzhJack/Comp-2537.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LzhJack/Comp-2537/issues"
+  },
+  "homepage": "https://github.com/LzhJack/Comp-2537#readme"
+}
