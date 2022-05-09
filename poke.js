@@ -1,19 +1,36 @@
-const res = require("express/lib/response");
+const pokedex = document.getElementById("pokedex");
 
-const poke_container =
-document.getElementById('poke_container');
-const pokemons_number = 150;
+console.log(pokedex);
 
-const fetchPokemons = async() => {
-    for(let i=1; i<= pokemons_number; i++){
-        await getPokemon(i);
+const fetchPokemon = () => {
+    const promises = []
+    for (let i = 1; i <= 150; i++) {
+        const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+        promises.push(fetch(url).then((res) => res.json()));
     }
-}
+    Promise.all(promises).then(results => {
+        const pokemon = results.map((data) => ({
+            name: data.name,
+            id: data.id,
+            image: data.sprites['front_default'],
+            type: data.types.map(type => type.type.name).join(', ')
+        }));
+        displayPokemon(pokemon);
+    });
+};
 
-const getPokemon = async id => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-    const pokemon = await res.json();
+const displayPokemon = (pokemon) => {
     console.log(pokemon);
-}
+    const pokemonHTMLString = pokemon.map (pokeman => `
+    <li class="card">
+        <img class="card-image" src="${pokeman.image}"/>
+        <h2 class="card-title" >${pokeman.id}.${pokeman.name}</h2>
+        <p class="card-subtitle" >Type: ${pokeman.type}</p>
+    </li>
+    `
+        )
+        .join('');
+    pokedex.innerHTML = pokemonHTMLString;
+};
 
-getPokemon(1);
+fetchPokemon();
