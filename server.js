@@ -1,14 +1,13 @@
-let http = require('http');
-let url = require('url');
+const express = require('express');
+const app = express();
 
-http.createServer((req,res) =>{
-    let q = url.parse(req.url, true);
-    console.log(q.query);
+app.use(express.static(__dirname ));
 
-    res.writeHead(200, {
-        "Content-Type": "text/html",
-        "Access-Control-Allow-Origin":"*"
-    });
+app.listen(process.env.PORT || 5005, function (err) {
+    if (err)
+        console.log(err);
+});
 
-    res.end(`Hello ${q.query[`name`]}`);
-}).listen(process.env.PORT || 3000);
+app.get('/',function(req,res){
+    res.sendFile('poke.html', { root: __dirname });
+});
