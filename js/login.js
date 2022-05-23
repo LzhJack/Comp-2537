@@ -1,3 +1,29 @@
+function redirect_to_signup() {
+    location.href = "/signup"
+}
+
+function show_full_menu() {
+    console.log($("#full_menu").css("display"))
+    if ($("#full_menu").css("display") == "none") {
+        $("#full_menu").css("display", "flex")
+    }
+    else {
+        $("#full_menu").css("display", "none")
+    }
+}
+
+function redirect_to_page() {
+    if ($(this).attr("id") == "home-tab") {
+        location.href = "/poke"
+    }
+}
+
+function show_active_nav_item() {
+    $(".navbar-item").removeClass("active")
+    $(this).addClass("active")
+}
+//
+
 function return_to_normal_position() {
     $(".news-card").css({"transform": "translate(0, 0)", "box-shadow": "0px 4px 4px rgb(0, 0, 0, 0.25)"})
 }
@@ -42,7 +68,18 @@ function change_display_name(data) {
     $(".logged_in_username").text(data[0].name)
 }
 
+// function welcome_the_user() {
+//     $.ajax(
+//         {
+//             "url": "/getUserInfo",
+//             "type": "GET",
+//             "success": change_display_name
+//         }
+//     )
+// }
+
 function listenToClick() {
+    // welcome_the_user()
     $("#sign_out").click(sign_out_user)
     $("#incorrect-login").hide()
     console.log("loaded")
