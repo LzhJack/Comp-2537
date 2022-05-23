@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:wght@300&display=swap');
+
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+h2{
+    text-align: center;
+}
+
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: #fdfffc;
+    transition: 0.3s;
+    padding: 5px;
+    width: 80%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+.sign_up_img_container {
+    margin: auto;
+}
+
+.sign_up_img_container img{
+    margin: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form input {
+    width: 100%;
+}
+
+.card:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+a{
+    background-color: #ed2939;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+a:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2)
+}
+
+input{
+    padding: 0.7rem .1rem;
+    /* border: 1px #ced4da */
+    width: 40%;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: ghostwhite 
+
+}
+
+input:hover{
+    border: 2px solid;
+}
+
+input, label{
+    display:block;
+    
+}
+
+fieldset{
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    min-width: none;
+}
+
+html{
+    background-color: #c1292e;
+}
