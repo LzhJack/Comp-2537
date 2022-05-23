@@ -22,7 +22,7 @@ app.use("/js", express.static("./js"));
 
 
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/signup.html")
+    res.sendFile(__dirname + "/login.html")
 })
 
 function filter_password(data) {
@@ -122,3 +122,8 @@ app.put('/addNewUser', function (req, res) {
 app.get('/thanks', function (req, res) {
     res.sendFile(__dirname + "/thanks.html")
 })
+
+app.get('/signup', function (req, res) {
+    res.sendFile(__dirname + "/signup.html")
+})
+
