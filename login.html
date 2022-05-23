@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="./img/covention_icon.ico">
+    <link rel="stylesheet" href="./css/login.css">
+    <title>Co-Vention</title>
+</head>
+
+<body>
+    <section class="box">
+        <div form="form">
+            <h2>User Login</h2>
+            <form action="">
+                <input type="text" autocomplete="off" name="username" class="input-field" placeholder="Username" id="username">
+                <input type="password" autocomplete="off" name="password" class="input-field" placeholder="Password" id="password">
+                <input type="button" class="btn" value="LOG IN" id="login"><br>
+                <p>New to Co-Vention? Click <a href="/signup" id="sign">here</a> to sign up.</p>
+                <div id="incorrect-login">The username and password combo is not correct, enter again.</div>
+            </form>
+        </div>
+    </section>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="./js/login.js"></script>
+</html>
