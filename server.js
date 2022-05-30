@@ -179,7 +179,7 @@ const { request } = require("express");
 const { name } = require("ejs");
 const { Router } = require("express");
 
-mongoose.connect("mongodb+srv://mongodb+srv://lzh9459:BGcoIifOP19wZOLE@cluster0.jecig.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://lzh9459:BGcoIifOP19wZOLE@cluster0.jecig.mongodb.net/?retryWrites=true&w=majority",
  {useNewUrlParser: true, useUnifiedTopology: true});
 const userSchema = new mongoose.Schema({ 
     _id:Object,
