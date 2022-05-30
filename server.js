@@ -18,7 +18,7 @@ app.use(cors())
 
 app.use("/css", express.static("./css"));
 app.use("/js", express.static("./js"));
-// app.use("/img", express.static("./img"))
+app.use("/img", express.static("./img"))
 
 
 app.get("/", function (req, res) {
