@@ -1,4 +1,3 @@
-// const mysql = require("mysql");nn
 const express = require("express");
 const app = express();
 const ejs = require('ejs');
@@ -33,15 +32,15 @@ app.use("/css", express.static("./css"));
 app.use("/js", express.static("./js"));
 app.use("/img", express.static("./img"))
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/index.html")
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/login.html")
 })
 
 function filter_password(data) {
   return data.password
 }
 
-app.post("/login", function(req, res) {
+app.post("/login", function (req, res) {
   console.log("post request recieved")
   console.log(req.body.username, req.body.password)
   const loginValidationSchema = Joi.object().keys({
@@ -54,12 +53,12 @@ app.post("/login", function(req, res) {
   }
   console.log("login credentials", login_credentials)
 
-  const {error, value} = loginValidationSchema.validate(login_credentials)
+  const { error, value } = loginValidationSchema.validate(login_credentials)
   if (error) {
     res.send(error.details[0].message)
   }
   else {
-    userModel.find({username: req.body.username}, function(err, user) {
+    userModel.find({ username: req.body.username }, function (err, user) {
       // console.log(`entered: ${pass}, in db: ${user}`)
       var full_info = user
       console.log("Full Info: ", full_info)
@@ -68,28 +67,28 @@ app.post("/login", function(req, res) {
       }
       else {
         user = user.map(filter_password)
-      console.log(user[0])
-      bcrypt.compare(req.body.password, user[0], function(err, result) {
-        if (err){
-          req.session.authenticated = false
-          res.send("error please try again")
-        }
-        else if (result) {
-          id = full_info[0]._id
-          req.session.real_user = full_info
-          // console.log(req.session.real_user = full_info)
-          console.log(full_info)
-          req.session.authenticated = true
-          if (req.session.real_user[0].type == "admin") {
-            res.send("admin detected")
-          } else {
-            res.send("success")
+        console.log(user[0])
+        bcrypt.compare(req.body.password, user[0], function (err, result) {
+          if (err) {
+            req.session.authenticated = false
+            res.send("error please try again")
           }
-        } else {
-          req.session.authenticated = false
-          res.send("incorrect information")
-        }
-    });
+          else if (result) {
+            id = full_info[0]._id
+            req.session.real_user = full_info
+            // console.log(req.session.real_user = full_info)
+            console.log(full_info)
+            req.session.authenticated = true
+            if (req.session.real_user[0].type == "admin") {
+              res.send("admin detected")
+            } else {
+              res.send("success")
+            }
+          } else {
+            req.session.authenticated = false
+            res.send("incorrect information")
+          }
+        });
       }
     })
   }
@@ -108,12 +107,12 @@ app.post("/adminLogin", function (res, req) {
     "username": req.body.username,
     "password": req.body.password
   }
-  const {error, value} = adminSchema.validate(admin_credentials)
+  const { error, value } = adminSchema.validate(admin_credentials)
   if (error) {
     res.send(error.details[0].message)
   }
   else {
-    userModel.find({username: username}, function (err, user) {
+    userModel.find({ username: username }, function (err, user) {
       console.log(`entered ${password} into db: ${user}.`)
       var full_info = user
       console.log("full info: ", full_info)
@@ -140,12 +139,12 @@ app.post("/adminLogin", function (res, req) {
   }
 })
 
-app.get("/signOut", function(req, res) {
-  req.session.authenticated = false
-  res.send("Signed out successfully!")
-})
+// app.get("/signOut", function(req, res) {
+//   req.session.authenticated = false
+//   res.send("Signed out successfully!")
+// })
 
-app.get("/poke", loginValidator, function(req, res) {
+app.get("/poke", loginValidator, function (req, res) {
   if (req.session.authenticated) {
     res.sendFile(__dirname + "/poke.html")
   }
@@ -154,8 +153,8 @@ app.get("/poke", loginValidator, function(req, res) {
   }
 })
 
-app.get("/getUserInfo", function(req, res) {
-  userModel.find({username: req.session.real_user[0].username}, function(err, data) {
+app.get("/getUserInfo", function (req, res) {
+  userModel.find({ username: req.session.real_user[0].username }, function (err, data) {
     if (err) {
       console.log("Err" + err)
     }
@@ -166,8 +165,8 @@ app.get("/getUserInfo", function(req, res) {
   })
 })
 
-app.post("/findUser", function(req, res) {
-  userModel.find({username: req.body.username}, function(err, data) {
+app.post("/findUser", function (req, res) {
+  userModel.find({ username: req.body.username }, function (err, data) {
     if (err) {
       console.log("Err" + err)
     }
@@ -181,7 +180,7 @@ app.post("/findUser", function(req, res) {
 
 app.listen(process.env.PORT || 5010, function (err) {
   if (err)
-      console.log(err);
+    console.log(err);
 })
 
 const mongoose = require('mongoose');
@@ -189,16 +188,16 @@ const { request } = require("express");
 const { name } = require("ejs");
 const { Router } = require("express");
 
-mongoose.connect("mongodb+srv://mongodb+srv://lzh9459:BGcoIifOP19wZOLE@cluster0.jecig.mongodb.net/?retryWrites=true&w=majority",
-{ useNewUrlParser: true, useUnifiedTopology: true });
-const userSchema = new mongoose.Schema({ 
-    _id:Object,
-    name: String,
-    password: String,
-    type: String,
-    email: String,
-    username: String,
-    phone: String,
+mongoose.connect("mongodb+srv://lzh9459:BGcoIifOP19wZOLE@cluster0.jecig.mongodb.net/?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true });
+const userSchema = new mongoose.Schema({
+  _id: Object,
+  name: String,
+  password: String,
+  type: String,
+  email: String,
+  username: String,
+  phone: String,
 });
 
 
@@ -213,18 +212,17 @@ const userSchema = new mongoose.Schema({
 
 const userModel = mongoose.model("users", userSchema);
 
-app.get('/profile', (req,res) =>{ 
-    userModel.find({name:req.session.real_user.name}, function(err,users)
-     {
-      res.render('profile', {
-        name: req.session.real_user[0].name,
-        email: req.session.real_user[0].email,
-        username: req.session.real_user[0].username,
-        phone: req.session.real_user[0].phone,
-        img: req.session.real_user[0].img
+app.get('/profile', (req, res) => {
+  userModel.find({ name: req.session.real_user.name }, function (err, users) {
+    res.render('profile', {
+      name: req.session.real_user[0].name,
+      email: req.session.real_user[0].email,
+      username: req.session.real_user[0].username,
+      phone: req.session.real_user[0].phone,
+      img: req.session.real_user[0].img
 
-      })
     })
+  })
 })
 
 app.post('/changeUsername', function (req, res) {
@@ -234,15 +232,15 @@ app.post('/changeUsername', function (req, res) {
   updated_username = {
     "username": req.body.username
   }
-  const {error, value} = validateUsernameSchema.validate(updated_username)
+  const { error, value } = validateUsernameSchema.validate(updated_username)
   if (error) {
-    res.send(error.details[0].message) 
+    res.send(error.details[0].message)
   }
   else {
     userModel.updateOne({
       name: req.session.real_user[0].name
     }, {
-      $set: {'username': req.body.username}
+      $set: { 'username': req.body.username }
     }, function (err, data) {
       if (err) {
         console.log("Error: " + err)
@@ -250,7 +248,7 @@ app.post('/changeUsername', function (req, res) {
         console.log("Data: " + data)
         res.send("Successfully updated.")
       }
-    }) 
+    })
   }
 })
 
@@ -261,17 +259,17 @@ app.post('/changePassword', function (req, res) {
   updated_password = {
     "password": req.body.password
   }
-  const {error, value} = validatePasswordSchema.validate(updated_password)
+  const { error, value } = validatePasswordSchema.validate(updated_password)
   if (error) {
     res.send(error.details[0].message)
   }
   else {
-    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.genSalt(10, function (err, salt) {
       if (err) {
         console.log("Err" + err)
       }
       else {
-        bcrypt.hash(req.body.password, salt, function(err, hash) {
+        bcrypt.hash(req.body.password, salt, function (err, hash) {
           if (err) {
             console.log("Err" + err)
           }
@@ -280,7 +278,7 @@ app.post('/changePassword', function (req, res) {
             userModel.updateOne({
               name: req.session.real_user[0].name
             }, {
-              $set: {'password': req.body.password}
+              $set: { 'password': req.body.password }
             }, function (err, data) {
               if (err) {
                 console.log("Error: " + err)
@@ -298,12 +296,12 @@ app.post('/changePassword', function (req, res) {
 
 app.post('/changeEmail', function (req, res) {
   const validateEmailSchema = Joi.object().keys({
-    email: Joi.string().email({tlds: {allow: ["com"]}}).required()
+    email: Joi.string().email({ tlds: { allow: ["com"] } }).required()
   })
   updated_email = {
     "email": req.body.email
   }
-  const {error, value} = validateEmailSchema.validate(updated_email)
+  const { error, value } = validateEmailSchema.validate(updated_email)
   if (error) {
     res.send(error.details[0].message)
   }
@@ -311,7 +309,7 @@ app.post('/changeEmail', function (req, res) {
     userModel.updateOne({
       name: req.session.real_user[0].name
     }, {
-      $set: {'email': req.body.email}
+      $set: { 'email': req.body.email }
     }, function (err, data) {
       if (err) {
         console.log("Error: " + err)
@@ -330,7 +328,7 @@ app.post('/changePhoneNumber', function (req, res) {
   updated_phone = {
     "phone": req.body.phone
   }
-  const {error, value} = validatePhoneSchema.validate(updated_phone)
+  const { error, value } = validatePhoneSchema.validate(updated_phone)
   if (error) {
     res.send(error.details[0].message)
   }
@@ -338,7 +336,7 @@ app.post('/changePhoneNumber', function (req, res) {
     userModel.updateOne({
       name: req.session.real_user[0].name
     }, {
-      $set: {'phone': req.body.phone}
+      $set: { 'phone': req.body.phone }
     }, function (err, data) {
       if (err) {
         console.log("Error: " + err)
@@ -358,22 +356,22 @@ app.put('/insertRecord', (req, res) => {
     if (err) {
       console.log("Error: " + err)
     } else {
-      console.log ("Data: " + data)
+      console.log("Data: " + data)
     }
     res.send("Successfully inserted record.")
   })
 })
 
 app.get('/signup', function (req, res) {
-  res.sendFile(__dirname + "/common/signup.html")
+  res.sendFile(__dirname + "/signup.html")
 })
 
 app.put('/addNewUser', function (req, res) {
   const validateUserSchema = Joi.object().keys({
     username: Joi.string().min(1).required(), // string, min of one char, required
-    email: Joi.string().email({tlds: {allow: ["com"]}}).required(), // string, email, has to end with .com, required
+    email: Joi.string().email({ tlds: { allow: ["com"] } }).required(), // string, email, has to end with .com, required
     password: Joi.string().min(5).required(), // string, min of five chars, required
-    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required() 
+    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required()
   })// string, phone-format: XXX-XXX-XXXX, required
   validated_fields = {
     "username": req.body.username,
@@ -381,18 +379,18 @@ app.put('/addNewUser', function (req, res) {
     "password": req.body.password,
     "phone": req.body.phone
   }
-  const {error, value} = validateUserSchema.validate(validated_fields)
+  const { error, value } = validateUserSchema.validate(validated_fields)
   if (error) {
     console.log("Err" + error)
     res.send(error.details[0].message)
   }
   else {
-    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.genSalt(10, function (err, salt) {
       if (err) {
         console.log("Err" + err)
       }
       else {
-        bcrypt.hash(req.body.password, salt, function(err, hashed_password) {
+        bcrypt.hash(req.body.password, salt, function (err, hashed_password) {
           if (err) {
             console.log("Err" + err)
           }
@@ -405,19 +403,15 @@ app.put('/addNewUser', function (req, res) {
               'password': req.body.password,
               'email': req.body.email,
               'type': 'user',
-              'username': req.body.username,
-              'phone': req.body.phone,
-              'img': './img/profileicon.png',
-              'category': "covid_safety",
-              'education': "student",
-              'quiz_scores': [{'category': 'covid_safety', 'high_score': 0, 'tried_quiz': false}, {'category': 'covid_information', 'high_score': 0, "tried_quiz": false}]
-            }, function (err, data) {
-              if (err) {
-                console.log("Error: " + err)
-              } else {
-                console.log("Data: " + data)
-              }
-            })
+              'username': req.body.username
+            },
+              function (err, data) {
+                if (err) {
+                  console.log("Error: " + err)
+                } else {
+                  console.log("Data: " + data)
+                }
+              })
             res.send("success")
           }
         })
@@ -442,7 +436,7 @@ app.get('/getRecords', (req, res) => {
 })
 
 app.get('/getUsers', function (req, res) {
-  userModel.find({type: 'user'}, function (err, data) {
+  userModel.find({ type: 'user' }, function (err, data) {
     if (err) {
       console.log(err)
     } else {
@@ -452,9 +446,9 @@ app.get('/getUsers', function (req, res) {
   })
 })
 
-app.delete("/removeUser", function(req, res) {
+app.delete("/removeUser", function (req, res) {
   // req.body.username subject to change, may be some other value being used for criteria
-  userModel.deleteOne({username: req.body.username}, function(err, data) {
+  userModel.deleteOne({ username: req.body.username }, function (err, data) {
     if (err) {
       console.log("Err" + err)
     }
@@ -465,46 +459,48 @@ app.delete("/removeUser", function(req, res) {
   })
 })
 
-app.post("/updateUserInfo", function(req, res) {
+app.post("/updateUserInfo", function (req, res) {
   console.log(req.body.password)
-  criteria = {username: req.body.old_username}
+  criteria = { username: req.body.old_username }
   const validateUpdateSchema = Joi.object().keys({
     new_username: Joi.string().required(),
     password: Joi.string().min(5).required(),
-    email: Joi.string().email({tlds: {allow: ["com"]}}).required(),
+    email: Joi.string().email({ tlds: { allow: ["com"] } }).required(),
     phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required()
   })
   validate_updates = {
     "new_username": req.body.new_username,
     "password": req.body.password,
-    "email": req.body.email, 
+    "email": req.body.email,
     "phone": req.body.phone
   }
-  const {error, value} = validateUpdateSchema.validate(validate_updates)
+  const { error, value } = validateUpdateSchema.validate(validate_updates)
   if (error) {
     console.log("Error" + error.details[0].message)
     res.send(error.details[0].message)
   }
   else {
-    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.genSalt(10, function (err, salt) {
       if (err) {
         console.log("Err" + err)
       }
       else {
-        bcrypt.hash(req.body.password, salt, function(err, hash) {
+        bcrypt.hash(req.body.password, salt, function (err, hash) {
           if (err) {
             console.log("Err" + err)
           }
           else {
             console.log("HASH", hash)
             req.body.password = hash
-            updates = {$set: {
-              username: req.body.new_username,
-              password: req.body.password,
-              email: req.body.email, 
-              phone: req.body.phone}
+            updates = {
+              $set: {
+                username: req.body.new_username,
+                password: req.body.password,
+                email: req.body.email,
+                phone: req.body.phone
+              }
             }
-            userModel.updateOne(criteria, updates, function(err, data) {
+            userModel.updateOne(criteria, updates, function (err, data) {
               if (err) {
                 console.log("Err" + err)
               }
@@ -524,7 +520,7 @@ app.get('/adminPanel', loginValidator, function (req, res) {
   if (req.session.real_user[0].type == "admin") {
     res.sendFile(__dirname + "/adminPanel.html")
   } else {
-    res.redirect("/welcome")
+    res.redirect("/login")
   }
 })
 
