@@ -302,32 +302,6 @@ app.post('/changeEmail', function (req, res) {
   }
 })
 
-app.post('/changePhoneNumber', function (req, res) {
-  const validatePhoneSchema = Joi.object().keys({
-    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required()
-  })
-  updated_phone = {
-    "phone": req.body.phone
-  }
-  const {error, value} = validatePhoneSchema.validate(updated_phone)
-  if (error) {
-    res.send(error.details[0].message)
-  }
-  else {
-    userModel.updateOne({
-      name: req.session.real_user[0].name
-    }, {
-      $set: {'phone': req.body.phone}
-    }, function (err, data) {
-      if (err) {
-        console.log("Error: " + err)
-      } else {
-        console.log("Data: " + data)
-        res.send("Successfully updated.")
-      }
-    })
-  }
-})
 
 app.get('/signup', function (req, res) {
   res.sendFile(__dirname + "/signup.html")
@@ -338,13 +312,11 @@ app.put('/addNewUser', function (req, res) {
     username: Joi.string().min(1).required(), // string, min of one char, required
     email: Joi.string().email({tlds: {allow: ["com"]}}).required(), // string, email, has to end with .com, required
     password: Joi.string().min(5).required(), // string, min of five chars, required
-    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required() 
   })// string, phone-format: XXX-XXX-XXXX, required
   validated_fields = {
     "username": req.body.username,
     "email": req.body.email,
-    "password": req.body.password,
-    "phone": req.body.phone
+    "password": req.body.password
   }
   const {error, value} = validateUserSchema.validate(validated_fields)
   if (error) {
@@ -421,14 +393,12 @@ app.post("/updateUserInfo", function(req, res) {
   const validateUpdateSchema = Joi.object().keys({
     new_username: Joi.string().required(),
     password: Joi.string().min(5).required(),
-    email: Joi.string().email({tlds: {allow: ["com"]}}).required(),
-    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required()
+    email: Joi.string().email({tlds: {allow: ["com"]}}).required()
   })
   validate_updates = {
     "new_username": req.body.new_username,
     "password": req.body.password,
-    "email": req.body.email, 
-    "phone": req.body.phone
+    "email": req.body.email
   }
   const {error, value} = validateUpdateSchema.validate(validate_updates)
   if (error) {
@@ -451,8 +421,7 @@ app.post("/updateUserInfo", function(req, res) {
             updates = {$set: {
               username: req.body.new_username,
               password: req.body.password,
-              email: req.body.email, 
-              phone: req.body.phone}
+              email: req.body.email}
             }
             userModel.updateOne(criteria, updates, function(err, data) {
               if (err) {

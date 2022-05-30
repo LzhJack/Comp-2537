@@ -48,7 +48,7 @@ function show_click_effect() {
 
 function sign_out_confirmation(data) {
     console.log(data)
-    location.href = "/login"
+    location.href = "/poke"
 }
 
 function sign_out_user() {
