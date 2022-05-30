@@ -16,6 +16,9 @@ function redirect_to_page() {
     if ($(this).attr("id") == "login") {
         location.href = "/poke"
     }
+    if ($(this).attr("id") == "button-1") {
+        location.href = "/memorycard"
+    }
 }
 
 // This code snippet was a portion the W3Schools Horizontal Tabs How-To
